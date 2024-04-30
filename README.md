@@ -16,3 +16,8 @@ to deaktivate the sync
 TriggerEvent("ausnahmewaffenrad",false)
 
 to enable it again
+
+
+Tested with version 2.38.1
+
+All love and appreciation goes to overextended, they are making the best inventory for FiveM out there!
