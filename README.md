@@ -1,4 +1,4 @@
-# ox_inventory-meets-weaponwheel
+# ox inventory meets weapon wheel
 ox_inventory meets weaponwheel with hotbar
 
 I made some changes in the files that I provide here to have a weaponwheel with the full functions of ox_inventory (ammo/reload/usage)
@@ -11,7 +11,7 @@ Trigger the event "ausnahmewaffenrad" to disable the sync between weaponwheel an
 
 TriggerEvent("ausnahmewaffenrad",true)
 
-to deaktivate the sync
+to deactivate the sync
 
 TriggerEvent("ausnahmewaffenrad",false)
 
