@@ -1,7 +1,7 @@
-# ox inventory meets weapon wheel
+# ox inventory meets weaponwheel
 ox_inventory meets weaponwheel with hotbar
 
-I made some changes in the files that I provide here to have a weaponwheel with the full functions of ox_inventory (ammo/reload/usage)
+I made some changes in the files that I provide here to have a weapon wheel with the full functions of ox inventory (ammo/reload/usage/hotbar)
 
 Try to replace your files with the file I provide. If needed I can provide you my complete ox_inventory or provide support for implementing my files in your ox_inventory.
 
