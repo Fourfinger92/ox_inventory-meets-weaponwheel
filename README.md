@@ -7,7 +7,7 @@ Try to replace your files with the file I provide. If needed I can provide you m
 
 Trigger the event "ausnahmewaffenrad" to disable the sync between weaponwheel and ox_inventory (e.g. for FFA).
 
-Example:
+# Example:
 
 TriggerEvent("ausnahmewaffenrad",true)
 
@@ -17,7 +17,7 @@ TriggerEvent("ausnahmewaffenrad",false)
 
 to enable it again
 
-Happy for suggestions, improvements and found bugs :)
+# Happy for suggestions, improvements and found bugs :)
 
 Tested with version 2.38.1
 
