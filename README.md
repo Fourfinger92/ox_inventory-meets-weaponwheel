@@ -17,6 +17,7 @@ TriggerEvent("ausnahmewaffenrad",false)
 
 to enable it again
 
+Happy for suggestions, improvements and found bugs :)
 
 Tested with version 2.38.1
 
