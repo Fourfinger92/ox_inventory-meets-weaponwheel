@@ -47,3 +47,5 @@ to enable the hotbar after enabling the weapon wheel or the combination of both
 Tested with version 2.39.1
 
 All love and appreciation goes to overextended, they are making the best inventory for FiveM out there!
+
+Thanks for the inspiration and help goes to 5Labs
