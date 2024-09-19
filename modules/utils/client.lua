@@ -1,6 +1,7 @@
 if not lib then return end
-
+local labs = exports["5LabsCore"]
 local Utils = {}
+Utils.Waffensyncaus = false
 
 function Utils.PlayAnim(wait, dict, name, blendIn, blendOut, duration, flag, rate, lockX, lockY, lockZ)
 	lib.requestAnimDict(dict)
@@ -10,13 +11,75 @@ function Utils.PlayAnim(wait, dict, name, blendIn, blendOut, duration, flag, rat
 	if wait > 0 then Wait(wait) end
 end
 
-function Utils.PlayAnimAdvanced(wait, dict, name, posX, posY, posZ, rotX, rotY, rotZ, blendIn, blendOut, duration, flag, time)
+function Utils.PlayAnimAdvanced(wait, dict, name, posX, posY, posZ, rotX, rotY, rotZ, blendIn, blendOut, duration, flag,
+								time)
 	lib.requestAnimDict(dict)
-	TaskPlayAnimAdvanced(cache.ped, dict, name, posX, posY, posZ, rotX, rotY, rotZ, blendIn, blendOut, duration, flag, time, 0, 0)
+	TaskPlayAnimAdvanced(cache.ped, dict, name, posX, posY, posZ, rotX, rotY, rotZ, blendIn, blendOut, duration, flag,
+		time, 0, 0)
 	RemoveAnimDict(dict)
 
 	if wait > 0 then Wait(wait) end
 end
+
+function Utils.DrawMarker(data)
+
+	DrawMarker(
+		data.type or 0 --[[ integer ]],
+		data.posX --[[ number ]],
+		data.posY --[[ number ]],
+		data.posZ --[[ number ]],
+		data.dirX or 0.0 --[[ number ]],
+		data.dirY or 0.0 --[[ number ]],
+		data.dirZ or 0.0 --[[ number ]],
+		data.rotX or 0.0 --[[ number ]],
+		data.rotY or 0.0 --[[ number ]],
+		data.rotZ or 0.0 --[[ number ]],
+		data.scaleX or 5.0 --[[ number ]],
+		data.scaleY or 5.0 --[[ number ]],
+		data.scaleZ or 5.0 --[[ number ]],
+		data.red or 255 --[[ integer ]],
+		data.green or 0 --[[ integer ]],
+		data.blue or 255 --[[ integer ]],
+		data.alpha or 90 --[[ integer ]],
+		data.bobUpAndDown --[[ boolean ]],
+		data.faceCamera or false --[[ boolean ]],
+		data.p19 or 2 --[[ integer ]],
+		data.rotate or false --[[ boolean ]],
+		data.textureDict or nil --[[ string ]],
+		data.textureName or nil --[[ string ]],
+		data.drawOnEnts or false --[[ boolean ]]
+	)
+end
+
+function Utils.LABS_PlayAnimationAdvanced(data)
+	lib.requestAnimDict(data.dict)
+
+	TaskPlayAnimAdvanced(
+		data.ped --[[ Ped ]],
+		data.dict --[[ string ]],
+		data.animName --[[ string ]],
+		data.posX --[[ number ]],
+		data.posY --[[ number ]],
+		data.posZ --[[ number ]],
+		data.rotX or 0 --[[ number ]],
+		data.rotY or 0 --[[ number ]],
+		data.rotZ or 0 --[[ number ]],
+		data.animEnterSpeed or 8.0 --[[ number ]],
+		data.animExitSpeed or 3.0 --[[ number ]],
+		data.duration --[[ integer ]],
+		data.flag or 50 --[[ Any ]],
+		data.animTime --[[ number ]],
+		data.p14 or 0 --[[ Any ]],
+		data.p15 or 0 --[[ Any ]]
+	)
+
+	RemoveAnimDict(data.dict)
+
+	if data.sleep > 0 then 
+		DisableControlAction(0, 37, true)
+		Wait(data.sleep) end
+end
+
 
 ---@param flag number
 ---@param destination? vector3
@@ -26,13 +89,14 @@ end
 function Utils.Raycast(flag, destination, size)
 	local playerCoords = GetEntityCoords(cache.ped)
 	destination = destination or GetOffsetFromEntityInWorldCoords(cache.ped, 0.0, 2.2, -0.25)
-	local rayHandle = StartShapeTestCapsule(playerCoords.x, playerCoords.y, playerCoords.z + 0.5, destination.x, destination.y, destination.z, size or 2.2, flag or 30, cache.ped, 4)
+	local rayHandle = StartShapeTestCapsule(playerCoords.x, playerCoords.y, playerCoords.z + 0.5, destination.x,
+		destination.y, destination.z, size or 2.2, flag or 30, cache.ped, 4)
 	while true do
 		Wait(0)
 		local result, _, coords, _, entityHit = GetShapeTestResult(rayHandle)
 		if result ~= 1 then
-            -- DrawLine(playerCoords.x, playerCoords.y, playerCoords.z + 0.5, destination.x, destination.y, destination.z, 0, 0, 255, 255)
-            -- DrawLine(playerCoords.x, playerCoords.y, playerCoords.z + 0.5, coords.x, coords.y, coords.z, 255, 0, 0, 255)
+			-- DrawLine(playerCoords.x, playerCoords.y, playerCoords.z + 0.5, destination.x, destination.y, destination.z, 0, 0, 255, 255)
+			-- DrawLine(playerCoords.x, playerCoords.y, playerCoords.z + 0.5, coords.x, coords.y, coords.z, 255, 0, 0, 255)
 			local entityType
 			if entityHit then entityType = GetEntityType(entityHit) end
 			if entityHit and entityType ~= 0 then
@@ -81,7 +145,7 @@ function Utils.ItemNotify(data)
 		return
 	end
 
-	SendNUIMessage({action = 'itemNotify', data = data})
+	SendNUIMessage({ action = 'itemNotify', data = data })
 end
 
 RegisterNetEvent('ox_inventory:itemNotify', Utils.ItemNotify)
@@ -102,22 +166,66 @@ end
 local rewardTypes = 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3 | 1 << 7 | 1 << 10
 
 EnableWeaponWheel = true
+
 -- Enables the weapon wheel, but disables the use of inventory items
 -- Mostly used for weaponised vehicles, though could be called for "minigames"
-function Utils.WeaponWheel(state)
+	SetWeaponsNoAutoswap(true)
+	SetWeaponsNoAutoreload(true)
+function Utils.WeaponWheel(state,lurch)
 	if state == nil then state = EnableWeaponWheel end
 
-	EnableWeaponWheel = true
+	EnableWeaponWheel = state
 	SetWeaponsNoAutoswap(not state)
 	SetWeaponsNoAutoreload(not state)
-
+		Utils.WeaponWheelsyncen()
 	if client.suppresspickups then
 		-- CLEAR_PICKUP_REWARD_TYPE_SUPPRESSION | SUPPRESS_PICKUP_REWARD_TYPE
 		return state and N_0x762db2d380b48d04(rewardTypes) or N_0xf92099527db8e2a7(rewardTypes, true)
 	end
 end
 
+
+function Utils.Waffensyncdisable(state)
+	if state == nil then state = Utils.Waffensyncaus end
+	Utils.Waffensyncaus = state
+	Utils.WeaponWheelsyncen()
+end
+
+Utils.WeaponWheelundHotbar = function(state)
+	if state == nil then state = HotbarundWeaponWheel end
+	HotbarundWeaponWheel = state
+	Utils.WeaponWheel(state)
+end
+
+Utils.WeaponWheelsyncen = function ()
+	Utils.ClearWeapons()
+	if not Utils.Waffensyncaus then		
+		Wait(500)
+		local items = exports.ox_inventory:GetPlayerItems()
+		if items ~=nil  then
+			Waffencache = nil
+			Waffencache = {}
+			for k,v in pairs(items) do
+				if string.sub(v.name,1,7) =="WEAPON_"  and v.name ~= "WEAPON_PETROLCAN" then
+					if HasPedGotWeapon(cache.ped,v.name,false) then
+						RemoveWeaponFromPed(cache.ped,v.name)
+					end
+					local hash = GetHashKey(v.name)
+					Waffencache[hash] = {}
+					Waffencache[hash].name = v.name
+					Waffencache[hash].slot = v.slot
+					Waffencache[hash].hash = hash
+
+					GiveWeaponToPed(cache.ped,v.name,1,false,false)
+				end
+			end
+		end
+	end
+end
+
 exports('weaponWheel', Utils.WeaponWheel)
+exports('Waffensyncdisable', Utils.Waffensyncdisable)
+exports('WeaponWheelundHotbar', Utils.WeaponWheelundHotbar)
 
 function Utils.CreateBlip(settings, coords)
 	local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
@@ -137,33 +245,33 @@ end
 ---@param options? OxTargetOption[]
 ---@return number
 function Utils.CreateBoxZone(data, options)
-    if data.length then
-        local height = math.abs(data.maxZ - data.minZ)
-        local z = data.loc.z + math.abs(data.minZ - data.maxZ) / 2
-        data.coords = vec3(data.loc.x, data.loc.y, z)
-        data.size = vec3(data.width, data.length, height)
-        data.rotation = data.heading
-        data.loc = nil
-        data.heading = nil
-        data.length = nil
-        data.width = nil
-        data.maxZ = nil
-        data.minZ = nil
-    end
+	if data.length then
+		local height = math.abs(data.maxZ - data.minZ)
+		local z = data.loc.z + math.abs(data.minZ - data.maxZ) / 2
+		data.coords = vec3(data.loc.x, data.loc.y, z)
+		data.size = vec3(data.width, data.length, height)
+		data.rotation = data.heading
+		data.loc = nil
+		data.heading = nil
+		data.length = nil
+		data.width = nil
+		data.maxZ = nil
+		data.minZ = nil
+	end
 
-    if not data.options and options then
-        local distance = data.distance or 2.0
+	if not data.options and options then
+		local distance = data.distance or 2.0
 
-        for k, v in pairs(options) do
-            if not v.distance then
-                v.distance = distance
-            end
-        end
+		for k, v in pairs(options) do
+			if not v.distance then
+				v.distance = distance
+			end
+		end
 
-        data.options = options
-    end
+		data.options = options
+	end
 
-    return exports.ox_target:addBoxZone(data)
+	return exports.ox_target:addBoxZone(data)
 end
 
 return Utils
