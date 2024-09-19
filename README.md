@@ -48,4 +48,4 @@ Tested with version 2.39.1
 
 All love and appreciation goes to overextended, they are making the best inventory for FiveM out there!
 
-Thanks for the inspiration and help goes to 5Labs
+Thanks for the inspiration and help goes to 5Labs https://github.com/5LABS
