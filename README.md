@@ -7,7 +7,7 @@ ox_inventory meets weaponwheel with hotbar controllable via exports for the user
 I made some changes in the files that I provide here to have a weapon wheel, hotbar, or a combination of both controlable via exports. So you can implement them in your own commands or UI. 
 
 Default state is weapon wheel enabled.
-# I don''t provide an UI or commands to control these features only the exports
+# I don't provide an UI or commands to control these features only the exports
 
 Try to replace your files with the file I provide. If needed I can provide you my complete ox_inventory or provide support for implementing my files in your ox_inventory.
 
