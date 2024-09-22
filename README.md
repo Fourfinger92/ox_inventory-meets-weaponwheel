@@ -17,9 +17,9 @@ There are 3 exports for handling the Hotbar, Weaponwheel, the combination of bot
 
 exports["ox_inventory"]:weaponWheel()                Switch between hotbar and weapon wheel
 
-exports["ox_inventory"]:Waffensyncdisable()          Disable weaponsync, so you can use temporary weapons that are not in your inventory (for FFA, Gangwar or stuff like this)
+exports["ox_inventory"]:Weaponsyncdisable()          Disable weaponsync, so you can use temporary weapons that are not in your inventory (for FFA, Gangwar or stuff like this)
 
-exports["ox_inventory"]:WeaponWheelundHotbar()       Switch between hotbar and the combination of both
+exports["ox_inventory"]:WeaponWheelandHotbar()       Switch between hotbar and the combination of both
 
 When you have the combination of weapon wheel an hotbar enabled the keys 1 till 5 will control the hotbar, 6 till 9 and the mouse wheel will control the weapon wheel. Using Tab will trigger both standard functions of hotbar and weapon wheel. So the hotbar UI is visible and the weapon wheel is displayed or the weapon is changed. 
 
@@ -34,15 +34,15 @@ exports["ox_inventory"]:weaponWheel(false)
 
 to enable the hotbar after you had the weapon wheel enabled 
 
-exports["ox_inventory"]:Waffensyncdisable(true)
+exports["ox_inventory"]:Weaponsyncdisable(true)
 
 to deactivate the weaponsync (e.g. FFA)
 
-exports["ox_inventory"]:WeaponWheelundHotbar(true)
+exports["ox_inventory"]:WeaponWheelandHotbar(true)
 
 to enable the combination of hotbar and weapon wheel
 
-exports["ox_inventory"]:WeaponWheelundHotbar(false)
+exports["ox_inventory"]:WeaponWheelandHotbar(false)
 
 to enable the hotbar after enabling the weapon wheel or the combination of both
 
