@@ -978,7 +978,9 @@ local function updateInventory(data, weight)
 					itemCount[curItem.name] = {}
 				end
 				itemCount[curItem.name].count = (itemCount[curItem.name].count or 0) - curItem.count
-				itemCount[curItem.name].slot = item.slot
+				if not itemCount[curItem.name]?.slot then
+					itemCount[curItem.name].slot = curItem.slot
+				end
 			end
 
 			if item.count then				
@@ -1015,19 +1017,9 @@ local function updateInventory(data, weight)
 				
 				RemoveWeaponFromPed(cache.ped,item.name)
 				GiveWeaponToPed(cache.ped,item.name,1,false,false) 
-			elseif string.sub(item.name,1,7) =="WEAPON_" and item.count  == 0 then
-				local loeschdas
-				for k,v in pairs(Waffencache) do
-					if v.name ==item.name then
-						loeschdas = k
-					end
-				end
-				Waffencache[loeschdas] = nil
-				if currentWeapon and currentWeapon.name == item.name then
-					currentWeapon = Weapon.Disarm(currentWeapon, false,"lurch")
-				else
-					RemoveWeaponFromPed(cache.ped,item.name)
-				end 
+			elseif string.sub(item.name,1,7) =="WEAPON_"  and item.name ~= "WEAPON_PETROLCAN" and dings.count  == 0 then
+				local hash = GetHashKey(item.name)
+				Waffencache[hash].slot = dings.slot
 			end
 
 			-----Holgers Anpassungen ende
@@ -1035,6 +1027,12 @@ local function updateInventory(data, weight)
             TriggerEvent('ox_inventory:itemCount', item.name, item.count)
 
             if dings.count < 0 then		--added dings.	Holger
+
+				
+				if string.sub(item.name,1,7) =="WEAPON_" then 
+					Utils.WeaponWheelsyncen()
+				end
+				
                 if shared.framework == 'esx' then
                     TriggerEvent('esx:removeInventoryItem', item.name, item.count)
                 end
@@ -2035,7 +2033,7 @@ CreateThread(function()
 				else	
 					if temphash ~= -1569615261 and Weapon.WeaponByHash[temphash] then
 						RemoveWeaponFromPed(cache.ped, temphash)
-					else
+					elseif currentWeapon then
 						currentWeapon = Weapon.Disarm(currentWeapon,false,true)
 						--Wait(100)
 					end
