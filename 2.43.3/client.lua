@@ -976,12 +976,20 @@ local function updateInventory(data, weight)
 
 			local curItem = PlayerData.inventory[item.slot]
 
-			if curItem and curItem.name then
-				itemCount[curItem.name] = (itemCount[curItem.name] or 0) - curItem.count
+			if curItem and curItem.name then  -- if changed by Holger
+				if itemCount[curItem.name] == nil then
+					itemCount[curItem.name] = {}
+				end
+				itemCount[curItem.name].count = (itemCount[curItem.name].count or 0) - curItem.count
+				itemCount[curItem.name].slot = item.slot
 			end
 
-			if item.count then
-				itemCount[item.name] = (itemCount[item.name] or 0) + item.count
+			if item.count then	-- if changed by Holger
+				if itemCount[item.name] == nil then
+					itemCount[item.name] = {}
+				end
+				itemCount[item.name].count = (itemCount[item.name].count or 0) + item.count
+				itemCount[item.name].slot = item.slot
 			end
 
 			changes[item.slot] = item.count and item or false
@@ -996,6 +1004,7 @@ local function updateInventory(data, weight)
 
 	for itemName, dings in pairs(itemCount) do --changed count to dings  	Holger
 		local item = Items(itemName)
+		
 
         if item then
             item.count += dings.count --added dings. 	Holger
