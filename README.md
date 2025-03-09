@@ -50,6 +50,7 @@ to enable the hotbar after enabling the weapon wheel or the combination of both
 # Happy for suggestions, improvements and found bugs :)
 
 Tested with version 2.42.3
+Compatibility with 2.43.3 is new and I'm not able to test it with a larger player base, please let me know if there are problems.
 
 All love and appreciation goes to overextended, they are making the best inventory for FiveM out there!
 
