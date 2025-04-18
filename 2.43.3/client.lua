@@ -2033,6 +2033,7 @@ CreateThread(function()
 	local hash 
 	while true do
 		if EnableWeaponWheel and not Utils.Waffensyncaus then
+			print("bin im ersten")
 			local  temphash = GetSelectedPedWeapon(cache.ped)
 			if hash ~= temphash then
 				if Waffencache[temphash] then
@@ -2041,7 +2042,7 @@ CreateThread(function()
 				else	
 					if temphash ~= -1569615261 and Weapon.WeaponByHash[temphash] then
 						RemoveWeaponFromPed(cache.ped, temphash)
-					else
+					elseif currentWeapon then
 						currentWeapon = Weapon.Disarm(currentWeapon,false,true)
 						--Wait(100)
 					end
@@ -2049,15 +2050,16 @@ CreateThread(function()
 				hash = temphash
 			end
 		elseif Utils.Waffensyncaus then
-			local  temphash = GetSelectedPedWeapon(cache.ped)
+			local  temphash = GetSelectedPedWeapon(cache.ped)			
 			if hash ~= temphash then
 				if temphash ~= -1569615261 and hash ~= -1569615261  and Weapon.WeaponByHash[temphash] then
 					Weapon.triggerAnimation(hash,temphash,false)
 					Weapon.triggerAnimation(hash,temphash,true)
 				elseif hash == -1569615261 and temphash ~= -1569615261 and Weapon.WeaponByHash[temphash] then
 					Weapon.triggerAnimation(hash,temphash,true)
-				else
-					Weapon.triggerAnimation(hash,temphash,false)
+				elseif temphash == -1569615261 then
+					Weapon.triggerAnimation(hash,temphash,false)					
+					GiveWeaponToPed(playerPed, -1569615261, 0, false, true)
 				end
 				hash = temphash
 			end
@@ -2069,6 +2071,7 @@ CreateThread(function()
 	end
 
 end)
+
 
 
 
