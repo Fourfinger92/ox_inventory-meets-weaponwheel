@@ -2033,7 +2033,6 @@ CreateThread(function()
 	local hash 
 	while true do
 		if EnableWeaponWheel and not Utils.Waffensyncaus then
-			print("bin im ersten")
 			local  temphash = GetSelectedPedWeapon(cache.ped)
 			if hash ~= temphash then
 				if Waffencache[temphash] then
